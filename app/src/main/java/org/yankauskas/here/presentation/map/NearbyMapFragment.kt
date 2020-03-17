@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.*
+import kotlinx.android.synthetic.main.fragment_map.*
+import kotlinx.android.synthetic.main.view_map.view.*
 import org.yankauskas.here.R
 
 
-class MapFragment : Fragment() {
+class NearbyMapFragment : Fragment() {
 
     private lateinit var pageViewModel: PageViewModel
 
@@ -23,15 +24,15 @@ class MapFragment : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-        val root = inflater.inflate(R.layout.fragment_map, container, false)
-        val textView: TextView = root.findViewById(R.id.section_label)
-        pageViewModel.text.observe(this, Observer<String> {
-            textView.text = it
-        })
-        return root
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = inflater.inflate(R.layout.fragment_map, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        hereMapView.mapView.onCreate(arguments)
+        lifecycle.addObserver(hereMapView)
     }
 
     companion object {
@@ -46,8 +47,8 @@ class MapFragment : Fragment() {
          * number.
          */
         @JvmStatic
-        fun newInstance(sectionNumber: Int): MapFragment {
-            return MapFragment().apply {
+        fun newInstance(sectionNumber: Int): NearbyMapFragment {
+            return NearbyMapFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_SECTION_NUMBER, sectionNumber)
                 }
