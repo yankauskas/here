@@ -1,6 +1,7 @@
 package org.yankauskas.here.presentation
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,8 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.yankauskas.here.R
+import org.yankauskas.here.presentation.util.observeLiveData
+import org.yankauskas.here.presentation.util.observeResource
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
 
@@ -29,7 +32,10 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        myViewModel.requestLocationEvent.observe(this, Observer { askForLocationWithPermissionCheck() })
+        observeLiveData(myViewModel.requestLocationEvent) { askForLocationWithPermissionCheck() }
+        observeResource(myViewModel.geocode, { titleText.text = "Loading" }, {}) {
+            titleText.text = it
+        }
 
     }
 
@@ -38,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         myViewModel.requestLocation()
     }
 
+    @SuppressLint("NeedOnRequestPermissionsResult")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

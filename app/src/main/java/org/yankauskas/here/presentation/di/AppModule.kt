@@ -38,6 +38,7 @@ val appModule = module {
 
     single {
         Retrofit.Builder()
+            .baseUrl("https://hereapi.com") //Actually we don not need it but ...
             .addConverterFactory(GsonConverterFactory.create())
             .client(get())
             .build()
@@ -51,7 +52,7 @@ val appModule = module {
 
     single { HereRepository(get()) }
 
-    viewModel { MainViewModel(get()) }
+    viewModel { MainViewModel(get(), get()) }
 
 
 }

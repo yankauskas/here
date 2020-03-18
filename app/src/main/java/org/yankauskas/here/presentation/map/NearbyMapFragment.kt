@@ -13,6 +13,7 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.yankauskas.here.R
 import org.yankauskas.here.presentation.MainViewModel
+import org.yankauskas.here.presentation.util.observeLiveData
 
 
 class NearbyMapFragment : Fragment() {
@@ -29,8 +30,10 @@ class NearbyMapFragment : Fragment() {
         hereMapView.mapView.onCreate(arguments)
         lifecycle.addObserver(hereMapView)
 
-        myViewModel.location.observe(this, Observer {
-            hereMapView.showCurrentLocation(it)
-        })
+        hereMapView.onMapReadyListener = {
+            observeLiveData(myViewModel.location) {
+                hereMapView.showCurrentLocation(it)
+            }
+        }
     }
 }

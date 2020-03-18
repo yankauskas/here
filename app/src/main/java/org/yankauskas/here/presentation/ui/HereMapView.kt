@@ -24,6 +24,7 @@ class HereMapView @JvmOverloads constructor(
     defStyleAttr: Int = 0) : RelativeLayout(context, attrs, defStyleAttr), LifecycleObserver, OnMapReadyCallback {
 
     var map: GoogleMap? = null
+    var onMapReadyListener: () -> Unit = {}
 
     init {
         LayoutInflater.from(context).inflate(R.layout.view_map, this, true)
@@ -33,6 +34,7 @@ class HereMapView @JvmOverloads constructor(
         with(map) {
             uiSettings.setAllGesturesEnabled(true)
         }
+        onMapReadyListener()
     }
 
     fun showCurrentLocation(location: LatLng) {
