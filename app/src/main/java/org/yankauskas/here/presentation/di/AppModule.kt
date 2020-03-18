@@ -9,6 +9,8 @@ import org.yankauskas.here.data.HereRepository
 import org.yankauskas.here.data.datasource.HereWebDataSource
 import org.yankauskas.here.data.net.HereApiService
 import org.yankauskas.here.presentation.MainViewModel
+import org.yankauskas.here.presentation.entity.mapper.CategoryMapper
+import org.yankauskas.here.presentation.entity.mapper.PlaceMapper
 import org.yankauskas.here.presentation.manager.LocationManager
 import org.yankauskas.here.presentation.manager.LocationManagerImpl
 import retrofit2.Retrofit
@@ -52,7 +54,10 @@ val appModule = module {
 
     single { HereRepository(get()) }
 
-    viewModel { MainViewModel(get(), get()) }
+    single { CategoryMapper() }
 
+    single { PlaceMapper() }
+
+    viewModel { MainViewModel(get(), get(), get(), get()) }
 
 }

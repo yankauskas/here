@@ -8,9 +8,13 @@ import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
 import org.yankauskas.here.data.HereRepository
+import org.yankauskas.here.data.entity.CategoryEntity
 import org.yankauskas.here.data.net.Resource
+import org.yankauskas.here.data.net.mapSuccess
+import org.yankauskas.here.presentation.entity.Category
+import org.yankauskas.here.presentation.entity.mapper.CategoryMapper
+import org.yankauskas.here.presentation.entity.mapper.PlaceMapper
 import org.yankauskas.here.presentation.manager.LocationManager
 import org.yankauskas.here.presentation.util.HereConst
 import org.yankauskas.here.presentation.util.SingleLiveEvent
@@ -20,34 +24,45 @@ import org.yankauskas.here.presentation.util.SingleLiveEvent
  */
 class MainViewModel(
     private val locationManager: LocationManager,
-    private val hereRepository: HereRepository
+    private val hereRepository: HereRepository,
+    private val categoryMapper: CategoryMapper,
+    private val placeMapper: PlaceMapper
 ) : ViewModel() {
     val requestLocationEvent by lazy {
         SingleLiveEvent(null)
     }
     val location = MutableLiveData<LatLng>()
     val geocode = MutableLiveData<Resource<String>>()
+    val categories = MutableLiveData<Resource<List<Category>>>()
+    val selectedCategories = setOf<String>()
 
-    private val locationListener: (Location) -> Unit = {
+    private val initLocationListener: (Location) -> Unit = {
         if (it != HereConst.Location.EMPTY) {
             LatLng(it.latitude, it.longitude).let { latlng ->
                 location.value = latlng
                 loadGeoCode(latlng)
+                loadCategories(latlng)
             }
-
         }
     }
 
     override fun onCleared() {
-        locationManager.dispose(locationListener)
+        locationManager.dispose(initLocationListener)
     }
 
     fun requestLocation() {
-        locationManager.getCurrentLocation(locationListener)
+        locationManager.getCurrentLocation(initLocationListener)
     }
 
-    fun loadGeoCode(location: LatLng) = viewModelScope.launch(Dispatchers.Main) {
+    private fun loadGeoCode(location: LatLng) = viewModelScope.launch(Dispatchers.Main) {
         geocode.value = Resource.Loading()
         geocode.value = withContext(Dispatchers.IO) { hereRepository.getGeocode(location) }
+    }
+
+    private fun loadCategories(location: LatLng) = viewModelScope.launch(Dispatchers.Main) {
+        categories.value = Resource.Loading()
+        categories.value = withContext(Dispatchers.IO) {
+            hereRepository.getCategories(location).mapSuccess { categoryMapper.transform(it) }
+        }
     }
 }

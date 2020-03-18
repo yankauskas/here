@@ -9,10 +9,10 @@ data class PlacesResponse (
 )
 
 data class Results (
-    val items: List<Place>
+    val items: List<PlaceEntity>
 )
 
-data class Place (
+data class PlaceEntity (
     val position: List<Double>,
     val distance: Long,
     val title: String,
