@@ -12,16 +12,14 @@ import retrofit2.http.Query
  */
 interface HereApiService {
     @GET("https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json")
-    suspend fun getAddress(@Query("maxresults") maxResults: Int = 1,
-                              @Query("mode") mode: String = "retrieveAddresses",
-                              @Query("prox") location: String): Response<GeocodeResponse>
+    suspend fun getGeocode(@Query("maxresults") maxResults: Int = 1,
+                           @Query("mode") mode: String = "retrieveAddresses",
+                           @Query("prox") location: String): Response<GeocodeResponse>
 
     @GET("https://places.ls.hereapi.com/places/v1/discover/explore")
-    suspend fun getPopularPlaces(@Query("at") location: String,
-                                 @Query("at") category: String): Response<PlacesResponse>
+    suspend fun getPlaces(@Query("at") location: String,
+                                 @Query("cat") category: String): Response<PlacesResponse>
 
     @GET("https://places.ls.hereapi.com/places/v1/categories/places")
-    suspend fun getPopularPlacesCategories(@Query("maxresults") maxResults: Int = 1,
-                           @Query("mode") mode: String = "retrieveAddresses",
-                           @Query("prox") prox: String): Response<CategoriesResponse>
+    suspend fun getCategories(@Query("at") location: String): Response<CategoriesResponse>
 }

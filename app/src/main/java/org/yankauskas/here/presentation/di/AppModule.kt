@@ -5,6 +5,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import org.yankauskas.here.R
+import org.yankauskas.here.data.HereRepository
+import org.yankauskas.here.data.datasource.HereWebDataSource
 import org.yankauskas.here.data.net.HereApiService
 import org.yankauskas.here.presentation.MainViewModel
 import org.yankauskas.here.presentation.manager.LocationManager
@@ -44,6 +46,10 @@ val appModule = module {
     single<HereApiService> {
         get<Retrofit>().create(HereApiService::class.java)
     }
+
+    single { HereWebDataSource(get()) }
+
+    single { HereRepository(get()) }
 
     viewModel { MainViewModel(get()) }
 
