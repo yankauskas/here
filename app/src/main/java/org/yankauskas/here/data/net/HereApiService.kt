@@ -18,7 +18,7 @@ interface HereApiService {
 
     @GET("https://places.ls.hereapi.com/places/v1/discover/explore")
     suspend fun getPlaces(@Query("at") location: String,
-                                 @Query("cat") category: String): Response<PlacesResponse>
+                                 @Query("cat") category: String?): Response<PlacesResponse>
 
     @GET("https://places.ls.hereapi.com/places/v1/categories/places")
     suspend fun getCategories(@Query("at") location: String): Response<CategoriesResponse>

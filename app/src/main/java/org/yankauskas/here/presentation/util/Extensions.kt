@@ -7,3 +7,5 @@ import com.google.android.gms.maps.model.LatLng
  */
 
 fun LatLng.toHereParam() = "$latitude,$longitude"
+
+fun String.nullIfEmpty(): String? = if (isEmpty()) null else this

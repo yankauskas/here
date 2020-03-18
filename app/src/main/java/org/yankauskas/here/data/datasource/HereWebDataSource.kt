@@ -2,6 +2,7 @@ package org.yankauskas.here.data.datasource
 
 import com.google.android.gms.maps.model.LatLng
 import org.yankauskas.here.data.net.HereApiService
+import org.yankauskas.here.presentation.util.nullIfEmpty
 import org.yankauskas.here.presentation.util.toHereParam
 
 /**
@@ -14,7 +15,12 @@ class HereWebDataSource(private val api: HereApiService) : BaseDataSource(), Her
     override suspend fun getPlaces(
         location: LatLng,
         categories: Set<String>
-    ) = getResource { api.getPlaces(location.toHereParam(), categories.joinToString(",")) }
+    ) = getResource {
+        api.getPlaces(
+            location.toHereParam(),
+            categories.joinToString(",").nullIfEmpty()
+        )
+    }
 
     override suspend fun getCategories(location: LatLng) =
         getResource { api.getCategories(location.toHereParam()) }
