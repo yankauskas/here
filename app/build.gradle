@@ -63,5 +63,3 @@ dependencies {
     implementation "org.koin:koin-android:2.1.4"
     implementation "org.koin:koin-android-viewmodel:2.1.4"
 }
-
-apply plugin: 'com.google.gms.google-services'
