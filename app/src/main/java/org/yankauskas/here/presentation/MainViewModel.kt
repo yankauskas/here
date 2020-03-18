@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 import org.yankauskas.here.data.HereRepository
 import org.yankauskas.here.data.entity.CategoryEntity
 import org.yankauskas.here.data.net.Resource
+import org.yankauskas.here.data.net.doOnSuccess
 import org.yankauskas.here.data.net.mapSuccess
 import org.yankauskas.here.presentation.entity.Category
 import org.yankauskas.here.presentation.entity.mapper.CategoryMapper
@@ -33,8 +34,10 @@ class MainViewModel(
     }
     val location = MutableLiveData<LatLng>()
     val geocode = MutableLiveData<Resource<String>>()
-    val categories = MutableLiveData<Resource<List<Category>>>()
-    val selectedCategories = setOf<String>()
+    val getCategories = MutableLiveData<Resource<Unit>>()
+    val selectedCategoriesIds = mutableSetOf<String>()
+    val categories = arrayListOf<Category>()
+
 
     private val initLocationListener: (Location) -> Unit = {
         if (it != HereConst.Location.EMPTY) {
@@ -60,9 +63,13 @@ class MainViewModel(
     }
 
     private fun loadCategories(location: LatLng) = viewModelScope.launch(Dispatchers.Main) {
-        categories.value = Resource.Loading()
-        categories.value = withContext(Dispatchers.IO) {
+        getCategories.value = Resource.Loading()
+        getCategories.value = withContext(Dispatchers.IO) {
             hereRepository.getCategories(location).mapSuccess { categoryMapper.transform(it) }
+                .doOnSuccess {
+                    categories.clear()
+                    categories.addAll(it)
+                }.mapSuccess { Unit }
         }
     }
 }

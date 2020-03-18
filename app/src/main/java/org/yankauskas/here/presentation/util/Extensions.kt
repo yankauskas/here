@@ -34,8 +34,8 @@ inline fun <T> LifecycleOwner.observeLiveData(liveData: LiveData<T>, crossinline
 }
 
 inline fun <T> LifecycleOwner.observeResource(liveData: LiveData<Resource<T>>,
-                                                   crossinline loading: () -> Unit,
-                                                   crossinline error: (RetrofitException) -> Unit,
+                                                   crossinline loading: () -> Unit = {},
+                                                   crossinline error: (RetrofitException) -> Unit = {},
                                                    crossinline success: (T) -> Unit = {}) {
     liveData.observeResource(this, loading,
         error = { error(it) },

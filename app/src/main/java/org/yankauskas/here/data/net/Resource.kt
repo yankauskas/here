@@ -14,8 +14,13 @@ sealed class Resource<T> {
 }
 
 inline fun <T, Y> Resource<T>.mapSuccess(crossinline transform: (T) -> Y): Resource<Y> =
-        when (this) {
-            is Resource.Loading -> Resource.Loading()
-            is Resource.Error -> Resource.Error(ex)
-            is Resource.Success -> Resource.Success(transform(data))
-        }
+    when (this) {
+        is Resource.Loading -> Resource.Loading()
+        is Resource.Error -> Resource.Error(ex)
+        is Resource.Success -> Resource.Success(transform(data))
+    }
+
+inline fun <T> Resource<T>.doOnSuccess(crossinline doBlock: (T) -> Unit): Resource<T> {
+    if (this is Resource.Success) doBlock(data)
+    return this
+}
