@@ -14,7 +14,7 @@ import permissions.dispatcher.RuntimePermissions
 @RuntimePermissions
 class MainActivity : AppCompatActivity() {
 
-    val myViewModel: MainViewModel by viewModel()
+    private val myViewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,18 +24,13 @@ class MainActivity : AppCompatActivity() {
         tabs.setupWithViewPager(viewPager)
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+//            askForLocationWithPermissionCheck()
+
+
         }
 
-        myViewModel.location.observe(this, Observer {
-            Snackbar.make(fab, it, Snackbar.LENGTH_LONG).show()
-        })
-    }
+        myViewModel.requestLocationEvent.observe(this, Observer { askForLocationWithPermissionCheck() })
 
-    override fun onStart() {
-        super.onStart()
-        askForLocationWithPermissionCheck()
     }
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)

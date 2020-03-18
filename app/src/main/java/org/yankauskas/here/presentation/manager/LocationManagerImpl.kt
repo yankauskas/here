@@ -9,6 +9,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
+import org.yankauskas.here.presentation.util.HereConst
 
 /**
  * Created by Viktor Yankauskas (v.yankauskas@synergetica.net) on 18.03.2020.
@@ -28,14 +29,14 @@ class LocationManagerImpl constructor(private val context: Context) : LocationMa
 
     override fun getCurrentLocation(listener: (Location) -> Unit) {
         if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            listener(Location("dummyprovider"))
+            listener(HereConst.Location.EMPTY)
         else {
             listeners.add(listener)
             if (currentTask == null || currentTask?.isComplete == true) {
                 currentTask = fusedLocationClient.requestLocationUpdates(locationRequest, object : LocationCallback() {
                     override fun onLocationResult(locationResult: LocationResult) {
                         if (locationResult.locations.size > 0) listeners.forEach { it(locationResult.locations[0]) }
-                        else listeners.forEach { it(Location("dummyprovider")) }
+                        else listeners.forEach { it(HereConst.Location.EMPTY) }
                         listeners.clear()
                     }
                 }, null)

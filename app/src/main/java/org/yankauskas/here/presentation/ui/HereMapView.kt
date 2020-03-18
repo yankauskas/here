@@ -2,13 +2,16 @@ package org.yankauskas.here.presentation.ui
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.view_map.view.*
 import org.yankauskas.here.R
 
@@ -29,6 +32,14 @@ class HereMapView @JvmOverloads constructor(
         this.map = map
         with(map) {
             uiSettings.setAllGesturesEnabled(true)
+        }
+    }
+
+    fun showCurrentLocation(location: LatLng) {
+        map?.let {
+            it.isMyLocationEnabled = true
+            it.uiSettings.isMyLocationButtonEnabled
+            it.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15.0f))
         }
     }
 
