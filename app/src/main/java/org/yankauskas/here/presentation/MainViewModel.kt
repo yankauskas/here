@@ -25,7 +25,7 @@ class MainViewModel(
     val requestLocationEvent by lazy {
         SingleLiveEvent(null)
     }
-    val location = SingleLiveEvent<LatLng>()
+    val location = MutableLiveData<LatLng>()
     val geocode = MutableLiveData<Resource<String>>()
 
     private val locationListener: (Location) -> Unit = {
