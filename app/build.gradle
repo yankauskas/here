@@ -62,4 +62,16 @@ dependencies {
 
     implementation "org.koin:koin-android:2.1.4"
     implementation "org.koin:koin-android-viewmodel:2.1.4"
+
+    implementation 'com.squareup.okhttp3:okhttp:4.3.1'
+
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    implementation('com.squareup.retrofit2:retrofit:2.7.1') {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    }
+    implementation('com.squareup.retrofit2:converter-gson:2.7.1') {
+        exclude module: 'gson'
+        exclude group: 'com.squareup.retrofit2', module: 'retrofit'
+    }
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyD6q_WieD-aHGTLgQzSXl9bIwusuxIIQro</string>
+    <string name="here_api_key" templateMergeStrategy="preserve" translatable="false">QmHsHNECgBMGKeP9OC-TudUgwfAjomT5G0R8JiduC-o</string>
+    <string name="here_places_url" templateMergeStrategy="preserve" translatable="false">https://places.ls.hereapi.com/places/v1/discover/explore</string>
+
+</resources>
