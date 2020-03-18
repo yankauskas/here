@@ -18,9 +18,7 @@ class NearbyMapFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pageViewModel = ViewModelProviders.of(this).get(PageViewModel::class.java).apply {
-            setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
-        }
+        pageViewModel = ViewModelProviders.of(this).get(PageViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -33,26 +31,5 @@ class NearbyMapFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         hereMapView.mapView.onCreate(arguments)
         lifecycle.addObserver(hereMapView)
-    }
-
-    companion object {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private const val ARG_SECTION_NUMBER = "section_number"
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        @JvmStatic
-        fun newInstance(sectionNumber: Int): NearbyMapFragment {
-            return NearbyMapFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_SECTION_NUMBER, sectionNumber)
-                }
-            }
-        }
     }
 }
