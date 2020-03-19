@@ -19,16 +19,10 @@ import org.yankauskas.here.presentation.MainViewModel
 import org.yankauskas.here.presentation.util.*
 
 
-class ListFragment : Fragment() {
+class ListFragment : Fragment(R.layout.fragment_list) {
 
     private val myViewModel: MainViewModel by sharedViewModel()
     private val adapter: SearchCategoryAdapter by inject()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
