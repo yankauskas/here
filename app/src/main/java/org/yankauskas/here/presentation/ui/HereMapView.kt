@@ -62,7 +62,7 @@ class HereMapView @JvmOverloads constructor(
             })
             var bounds = LatLngBounds.Builder().include(markers.first().position).build()
             markers.forEach { bounds = bounds.including(it.position) }
-            map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10))
+            map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 30))
         }
     }
 
