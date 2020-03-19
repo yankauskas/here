@@ -4,7 +4,7 @@ import java.io.IOException
 import java.net.ConnectException
 
 /**
- * Created by alex_litvinenko on 03.08.17.
+ * Created by Viktor Yankauskas (v.yankauskas@synergetica.net) on 18.03.2020.
  */
 sealed class RetrofitException constructor(val kind: Kind) : RuntimeException() {
 

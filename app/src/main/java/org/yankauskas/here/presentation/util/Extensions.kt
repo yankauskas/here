@@ -1,5 +1,6 @@
 package org.yankauskas.here.presentation.util
 
+import android.view.View
 import androidx.lifecycle.*
 import com.google.android.gms.maps.model.LatLng
 import org.yankauskas.here.data.net.Resource
@@ -41,3 +42,7 @@ inline fun <T> LifecycleOwner.observeResource(liveData: LiveData<Resource<T>>,
         error = { error(it) },
         success = { success(it) })
 }
+
+fun View.visible() { this.visibility = View.VISIBLE }
+
+fun View.gone() { this.visibility = View.GONE }

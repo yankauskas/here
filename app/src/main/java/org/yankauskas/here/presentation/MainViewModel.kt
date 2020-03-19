@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 import org.yankauskas.here.data.HereRepository
 import org.yankauskas.here.data.entity.CategoryEntity
 import org.yankauskas.here.data.net.Resource
+import org.yankauskas.here.data.net.RetrofitException
 import org.yankauskas.here.data.net.doOnSuccess
 import org.yankauskas.here.data.net.mapSuccess
 import org.yankauskas.here.presentation.entity.Category
@@ -58,7 +59,7 @@ class MainViewModel(
                 loadGeoCode(latlng)
                 loadPlaces(latlng)
             }
-        } else getPlaces.value = Resource.Error(Throwable("Location is unavailable"))
+        } else getPlaces.value = Resource.Error(RetrofitException.UnexpectedRetrofitException(Throwable("Location is unavailable")))
     }
 
     override fun onCleared() {

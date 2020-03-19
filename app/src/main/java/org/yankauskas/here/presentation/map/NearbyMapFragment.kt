@@ -1,17 +1,13 @@
 package org.yankauskas.here.presentation.map
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.*
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.view_map.view.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
 import org.yankauskas.here.R
 import org.yankauskas.here.presentation.MainViewModel
 import org.yankauskas.here.presentation.util.observeLiveData

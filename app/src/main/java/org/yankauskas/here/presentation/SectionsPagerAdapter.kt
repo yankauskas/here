@@ -13,9 +13,9 @@ private val TAB_TITLES = arrayOf(
 )
 
 class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
-    FragmentPagerAdapter(fm) {
+    FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    private val fragmentList = arrayListOf(NearbyMapFragment(), ListFragment.newInstance(2))
+    private val fragmentList = arrayListOf(NearbyMapFragment(), ListFragment())
 
     override fun getItem(position: Int) = fragmentList[position]
 

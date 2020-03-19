@@ -11,6 +11,7 @@ import org.yankauskas.here.data.net.HereApiService
 import org.yankauskas.here.presentation.MainViewModel
 import org.yankauskas.here.presentation.entity.mapper.CategoryMapper
 import org.yankauskas.here.presentation.entity.mapper.PlaceMapper
+import org.yankauskas.here.presentation.list.SearchCategoryAdapter
 import org.yankauskas.here.presentation.manager.LocationManager
 import org.yankauskas.here.presentation.manager.LocationManagerImpl
 import retrofit2.Retrofit
@@ -51,12 +52,12 @@ val appModule = module {
     }
 
     single { HereWebDataSource(get()) }
-
     single { HereRepository(get()) }
 
     single { CategoryMapper() }
-
     single { PlaceMapper() }
+
+    factory { SearchCategoryAdapter() }
 
     viewModel { MainViewModel(get(), get(), get(), get()) }
 

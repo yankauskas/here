@@ -33,7 +33,10 @@ class MainActivity : AppCompatActivity() {
         fab.hide()
 
         observeLiveData(myViewModel.requestLocationEvent) { askForLocationWithPermissionCheck() }
-        observeResource(myViewModel.geocode, { titleText.text = getText(R.string.loading) }) {
+        observeResource(
+            myViewModel.geocode,
+            { titleText.text = getText(R.string.loading) },
+            { titleText.text = getText(R.string.error) }) {
             titleText.text = it
         }
         observeResource(myViewModel.getCategories) { fab.show() }
