@@ -1,11 +1,19 @@
 package org.yankauskas.here.presentation.util
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 import android.view.View
-import androidx.lifecycle.*
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.map
 import com.google.android.gms.maps.model.LatLng
+import org.yankauskas.here.R
 import org.yankauskas.here.data.net.Resource
 import org.yankauskas.here.data.net.RetrofitException
 import org.yankauskas.here.data.net.mapSuccess
+
 
 /**
  * Created by Viktor Yankauskas (v.yankauskas@synergetica.net) on 18.03.2020.
@@ -46,3 +54,16 @@ inline fun <T> LifecycleOwner.observeResource(liveData: LiveData<Resource<T>>,
 fun View.visible() { this.visibility = View.VISIBLE }
 
 fun View.gone() { this.visibility = View.GONE }
+
+fun showError(context: Context, retrofitException: RetrofitException) {
+    val alertDialog = AlertDialog.Builder(context).create()
+    alertDialog.setTitle(R.string.error)
+    alertDialog.setMessage(when (retrofitException) {
+        is RetrofitException.NetworkRetrofitException -> context.getString(R.string.internet_error)
+        is RetrofitException.HttpRetrofitException -> retrofitException.responseCode.toString()
+        is RetrofitException.UnexpectedRetrofitException -> retrofitException.exception.message
+    })
+    alertDialog.setIcon(android.R.drawable.ic_delete)
+    alertDialog.setButton(DialogInterface.BUTTON_NEUTRAL, context.getString(R.string.ok)) { _, _ -> alertDialog.cancel() }
+    alertDialog.show()
+}

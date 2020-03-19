@@ -16,10 +16,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.yankauskas.here.R
 import org.yankauskas.here.presentation.MainViewModel
-import org.yankauskas.here.presentation.util.gone
-import org.yankauskas.here.presentation.util.observeLiveData
-import org.yankauskas.here.presentation.util.observeResource
-import org.yankauskas.here.presentation.util.visible
+import org.yankauskas.here.presentation.util.*
 
 
 class ListFragment : Fragment() {
@@ -44,7 +41,10 @@ class ListFragment : Fragment() {
             myViewModel.selectPlace(it)
         }
 
-        observeResource(myViewModel.getPlaces, { loadingText.visible() }) {
+        observeResource(myViewModel.getPlaces, { loadingText.visible() }, {
+            loadingText.gone()
+            showError(context!!, it)
+        }) {
             loadingText.gone()
             adapter.setData(it)
         }

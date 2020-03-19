@@ -6,4 +6,6 @@
     <string name="select_categories">Select categories</string>
     <string name="load">Load</string>
     <string name="error">Error 😢</string>
+    <string name="ok">OK</string>
+    <string name="internet_error">Check your connection</string>
 </resources>

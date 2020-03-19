@@ -13,6 +13,7 @@ import org.yankauskas.here.R
 import org.yankauskas.here.presentation.entity.Category
 import org.yankauskas.here.presentation.util.observeLiveData
 import org.yankauskas.here.presentation.util.observeResource
+import org.yankauskas.here.presentation.util.showError
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
 
@@ -36,10 +37,13 @@ class MainActivity : AppCompatActivity() {
         observeResource(
             myViewModel.geocode,
             { titleText.text = getText(R.string.loading) },
-            { titleText.text = getText(R.string.error) }) {
+            {
+                titleText.text = getText(R.string.error)
+                showError(this, it)
+            }) {
             titleText.text = it
         }
-        observeResource(myViewModel.getCategories) { fab.show() }
+        observeResource(myViewModel.getCategories, error = { showError(this, it) }) { fab.show() }
         observeLiveData(myViewModel.openMap) { viewPager.currentItem = 0 }
     }
 
