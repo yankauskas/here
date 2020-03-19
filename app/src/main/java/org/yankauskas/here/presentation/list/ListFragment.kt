@@ -39,7 +39,10 @@ class ListFragment : Fragment() {
         recyclerView.addItemDecoration(DividerItemDecoration(activity, OrientationHelper.VERTICAL))
         recyclerView.adapter = adapter
 
-        adapter.onItemClickListener = {}
+        adapter.onItemClickListener = {
+            myViewModel.openMap()
+            myViewModel.selectPlace(it)
+        }
 
         observeResource(myViewModel.getPlaces, { loadingText.visible() }) {
             loadingText.gone()

@@ -35,6 +35,9 @@ class NearbyMapFragment : Fragment() {
             observeResource(myViewModel.getPlaces) {
                 hereMapView.renderMarkers(it)
             }
+            observeLiveData(myViewModel.selectMarker) {
+                hereMapView.selectMarker(it)
+            }
         }
     }
 }

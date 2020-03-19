@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
             titleText.text = it
         }
         observeResource(myViewModel.getCategories) { fab.show() }
+        observeLiveData(myViewModel.openMap) { viewPager.currentItem = 0 }
     }
 
     private fun showCategoriesDialog() {

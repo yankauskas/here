@@ -34,13 +34,15 @@ class MainViewModel(
     val requestLocationEvent by lazy {
         SingleLiveEvent(null)
     }
+    val openMap = SingleLiveEvent<Unit>()
+    val selectMarker = SingleLiveEvent<LatLng>()
     val location = MutableLiveData<LatLng>()
     val geocode = MutableLiveData<Resource<String>>()
     val getCategories = MutableLiveData<Resource<Unit>>()
     val getPlaces = MutableLiveData<Resource<ArrayList<Place>>>()
+
     val selectedCategoriesIds = mutableSetOf<String>()
     val categories = arrayListOf<Category>()
-
 
     private val initLocationListener: (Location) -> Unit = {
         if (it != HereConst.Location.EMPTY) {
@@ -59,7 +61,11 @@ class MainViewModel(
                 loadGeoCode(latlng)
                 loadPlaces(latlng)
             }
-        } else getPlaces.value = Resource.Error(RetrofitException.UnexpectedRetrofitException(Throwable("Location is unavailable")))
+        } else getPlaces.value = Resource.Error(
+            RetrofitException.UnexpectedRetrofitException(
+                Throwable("Location is unavailable")
+            )
+        )
     }
 
     override fun onCleared() {
@@ -78,6 +84,12 @@ class MainViewModel(
             getPlaces.value = Resource.Loading()
             locationManager.getCurrentLocation(placesLocationListener)
         }
+    }
+
+    fun openMap() = openMap.call()
+
+    fun selectPlace(place: Place) {
+        selectMarker.value = place.position
     }
 
     private fun loadPlaces(location: LatLng) = viewModelScope.launch(Dispatchers.Main) {

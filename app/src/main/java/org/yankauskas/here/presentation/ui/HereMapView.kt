@@ -66,6 +66,13 @@ class HereMapView @JvmOverloads constructor(
         }
     }
 
+    fun selectMarker(location: LatLng) {
+        markers.firstOrNull { it.position == location }?.let {
+            it.showInfoWindow()
+            map?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15.0f))
+        }
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() = mapView.getMapAsync(this)
 
