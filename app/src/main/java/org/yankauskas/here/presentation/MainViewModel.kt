@@ -92,27 +92,24 @@ class MainViewModel(
         selectMarker.value = place.position
     }
 
-    private fun loadPlaces(location: LatLng) = viewModelScope.launch(Dispatchers.Main) {
-        getPlaces.value = Resource.Loading()
-        getPlaces.value = withContext(Dispatchers.IO) {
-            hereRepository.getPlaces(location, selectedCategoriesIds)
-                .mapSuccess { placeMapper.transform(it) }
-        }
+    private fun loadPlaces(location: LatLng) = viewModelScope.launch(Dispatchers.IO) {
+        getPlaces.postValue(Resource.Loading())
+        getPlaces.postValue(hereRepository.getPlaces(location, selectedCategoriesIds)
+            .mapSuccess { placeMapper.transform(it) })
     }
 
-    private fun loadGeoCode(location: LatLng) = viewModelScope.launch(Dispatchers.Main) {
-        geocode.value = Resource.Loading()
-        geocode.value = withContext(Dispatchers.IO) { hereRepository.getGeocode(location) }
+    private fun loadGeoCode(location: LatLng) = viewModelScope.launch(Dispatchers.IO) {
+        geocode.postValue(Resource.Loading())
+        geocode.postValue(hereRepository.getGeocode(location))
     }
 
-    private fun loadCategories(location: LatLng) = viewModelScope.launch(Dispatchers.Main) {
-        getCategories.value = Resource.Loading()
-        getCategories.value = withContext(Dispatchers.IO) {
+    private fun loadCategories(location: LatLng) = viewModelScope.launch(Dispatchers.IO) {
+        getCategories.postValue(Resource.Loading())
+        getCategories.postValue(
             hereRepository.getCategories(location).mapSuccess { categoryMapper.transform(it) }
                 .doOnSuccess {
                     categories.clear()
                     categories.addAll(it)
-                }.mapSuccess { Unit }
-        }
+                }.mapSuccess { Unit })
     }
 }
