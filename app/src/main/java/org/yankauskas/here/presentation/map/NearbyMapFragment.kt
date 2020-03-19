@@ -37,7 +37,7 @@ class NearbyMapFragment : Fragment() {
                 hereMapView.showCurrentLocation(it)
             }
             observeResource(myViewModel.getPlaces) {
-                it.forEach { Log.d("", it.toString()) }
+                hereMapView.renderMarkers(it)
             }
         }
     }
