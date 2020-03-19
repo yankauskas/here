@@ -40,7 +40,8 @@ class HereMapView @JvmOverloads constructor(
     fun showCurrentLocation(location: LatLng) {
         map?.let {
             it.isMyLocationEnabled = true
-            it.uiSettings.isMyLocationButtonEnabled
+            it.uiSettings.isMyLocationButtonEnabled = true
+            it.uiSettings.isZoomControlsEnabled = true
             it.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15.0f))
         }
     }

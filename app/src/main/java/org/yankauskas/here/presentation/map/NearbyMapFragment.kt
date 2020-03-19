@@ -1,6 +1,7 @@
 package org.yankauskas.here.presentation.map
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.yankauskas.here.R
 import org.yankauskas.here.presentation.MainViewModel
 import org.yankauskas.here.presentation.util.observeLiveData
+import org.yankauskas.here.presentation.util.observeResource
 
 
 class NearbyMapFragment : Fragment() {
@@ -33,6 +35,9 @@ class NearbyMapFragment : Fragment() {
         hereMapView.onMapReadyListener = {
             observeLiveData(myViewModel.location) {
                 hereMapView.showCurrentLocation(it)
+            }
+            observeResource(myViewModel.getPlaces) {
+                it.forEach { Log.d("", it.toString()) }
             }
         }
     }

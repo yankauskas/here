@@ -14,6 +14,7 @@ import org.yankauskas.here.data.net.Resource
 import org.yankauskas.here.data.net.doOnSuccess
 import org.yankauskas.here.data.net.mapSuccess
 import org.yankauskas.here.presentation.entity.Category
+import org.yankauskas.here.presentation.entity.Place
 import org.yankauskas.here.presentation.entity.mapper.CategoryMapper
 import org.yankauskas.here.presentation.entity.mapper.PlaceMapper
 import org.yankauskas.here.presentation.manager.LocationManager
@@ -35,6 +36,7 @@ class MainViewModel(
     val location = MutableLiveData<LatLng>()
     val geocode = MutableLiveData<Resource<String>>()
     val getCategories = MutableLiveData<Resource<Unit>>()
+    val getPlaces = MutableLiveData<Resource<ArrayList<Place>>>()
     val selectedCategoriesIds = mutableSetOf<String>()
     val categories = arrayListOf<Category>()
 
@@ -49,12 +51,40 @@ class MainViewModel(
         }
     }
 
+    private val placesLocationListener: (Location) -> Unit = {
+        if (it != HereConst.Location.EMPTY) {
+            LatLng(it.latitude, it.longitude).let { latlng ->
+                location.value = latlng
+                loadGeoCode(latlng)
+                loadPlaces(latlng)
+            }
+        } else getPlaces.value = Resource.Error(Throwable("Location is unavailable"))
+    }
+
     override fun onCleared() {
         locationManager.dispose(initLocationListener)
+        locationManager.dispose(placesLocationListener)
     }
 
     fun requestLocation() {
         locationManager.getCurrentLocation(initLocationListener)
+    }
+
+    fun loadPlaces() {
+        if (selectedCategoriesIds.isEmpty()) {
+            getPlaces.value = Resource.Success(arrayListOf())
+        } else {
+            getPlaces.value = Resource.Loading()
+            locationManager.getCurrentLocation(placesLocationListener)
+        }
+    }
+
+    private fun loadPlaces(location: LatLng) = viewModelScope.launch(Dispatchers.Main) {
+        getPlaces.value = Resource.Loading()
+        getPlaces.value = withContext(Dispatchers.IO) {
+            hereRepository.getPlaces(location, selectedCategoriesIds)
+                .mapSuccess { placeMapper.transform(it) }
+        }
     }
 
     private fun loadGeoCode(location: LatLng) = viewModelScope.launch(Dispatchers.Main) {

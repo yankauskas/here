@@ -55,10 +55,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        builder.setPositiveButton(R.string.load, { _, _ ->
-            // user clicked OK
-        })
-        builder.setNegativeButton("Cancel", null)
+        builder.setPositiveButton(R.string.load) { _, _ -> }
+        builder.setOnDismissListener { myViewModel.loadPlaces() }
         builder.create().show()
     }
 
