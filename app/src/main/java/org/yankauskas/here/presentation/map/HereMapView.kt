@@ -1,8 +1,7 @@
-package org.yankauskas.here.presentation.ui
+package org.yankauskas.here.presentation.map
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import androidx.lifecycle.Lifecycle

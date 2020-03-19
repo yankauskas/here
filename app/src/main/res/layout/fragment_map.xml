@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".presentation.map.NearbyMapFragment">
 
-    <org.yankauskas.here.presentation.ui.HereMapView
+    <org.yankauskas.here.presentation.map.HereMapView
         android:id="@+id/hereMapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
